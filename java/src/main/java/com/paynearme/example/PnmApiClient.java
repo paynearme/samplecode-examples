@@ -1,7 +1,5 @@
 package com.paynearme.example;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Collections2;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpResponse;
@@ -11,7 +9,6 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.HttpClients;
 
 import java.io.IOException;
-import java.net.URI;
 import java.util.*;
 
 /* Example paynearme http request */
@@ -53,12 +50,10 @@ public class PnmApiClient {
 
     private String queryString() {
         final Map<String, String> signed = signedParameters();
-        List<String> pairs = new ArrayList<>(Collections2.transform(signed.keySet(), new Function<String, String>() {
-            @Override
-            public String apply(String input) {
-                return input + "=" + signed.get(input);
-            }
-        }));
+        List<String> pairs = new ArrayList<String>(signed.keySet().size());
+        for (String key : signed.keySet()) {
+            pairs.add(key + "=" + signed.get(key));
+        }
         return StringUtils.join(pairs, "&");
     }
 

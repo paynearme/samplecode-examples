@@ -4,16 +4,34 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
-/**
- * Created by ryan on 4/10/14.
- */
 public class Runner {
     public static void main(String[] args) {
-        PnmApiClient api = new PnmApiClient("http://pnm-dev.grio.com:8080/rails40", "create_order", "secrets");
+        String host, method, secret;
+        List<String> params;
+        if (args.length >= 3) {
+            host = args[0];
+            method = args[1];
+            secret = args[2];
+
+            params = Arrays.asList(Arrays.copyOfRange(args, 3, args.length));
+        } else {
+            System.err.println("usage: java " + Runner.class.getSimpleName() + " <host> <method> <secret> [param=value]");
+            System.exit(1);
+            return; // suppresses IDE errors...
+        }
+
+        PnmApiClient api = new PnmApiClient(host, method, secret);
         api.setParam("version", "2.0");
         api.setParam("timestamp", Long.toString(System.currentTimeMillis() / 1000L));
-        api.setParam("site_identifier", "CUTEPUPPIES");
+
+        for (String param : params) {
+            String[] p = param.split("=");
+            if (p.length != 2) continue;
+            api.setParam(p[0], p[1]);
+        }
 
         System.out.println("URL for request: " + api.getUrlString());
 
