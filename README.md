@@ -58,9 +58,10 @@ With the gem installed your scripts may `require 'paynearme/api'` and use the pr
 ### Example:
 
 ```ruby
+require 'httparty'
 require 'paynearme/api'
 
-builder = Paynearme::Api::Request::Builder.new do |r|
+request = Paynearme::Api::Request::Builder.new do |r|
     r.host 'http://paynearmehost.tld/api'
     r.method :create_order
     r.secret 'top_secret_code!!!'
@@ -72,8 +73,10 @@ builder = Paynearme::Api::Request::Builder.new do |r|
     # ...
 end
 
-request = builder.build
-response = HTTParty.get request.to_s
+url = request.build.to_s
+
+puts "Request url: #{url}"
+puts HTTParty.get url
 
 JavaScript
 ==========
