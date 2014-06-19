@@ -51,3 +51,4 @@ url = request.build.to_s
 
 puts "Request url: #{url}"
 puts HTTParty.get url
+```
