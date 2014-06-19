@@ -104,9 +104,23 @@ $.ajax({
 PHP
 ===
 
-PHP example + lib
+The file request.php can be included to give access to helper functions for building signed urls for interacting with the PayNearMe API.
 
-C#
-===
+### Example:
 
-C# Example and lib
+```php
+<?php
+include('request.php');
+
+$req = new PaynearmeRequest('my_site_identifier', 'my_secret', '2.0');
+$req->addParam('site_identifier', 'my_site_identifier');
+$req->addParam('version', '2.0');
+$req->addParam('timestamp', 'the current time');
+
+
+$url = "http://paynearmeserver.tld/api/create_order" . $req->queryString();
+echo "URL: " . $url . "\n";
+$response = file_get_contents($url); // if allowed by your server, otherwise try other methods.
+print_r($response);
+?>
+```
