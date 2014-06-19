@@ -33,7 +33,7 @@ With the gem installed your scripts may `require 'paynearme/api'` and use the pr
 
 ```ruby
 require 'httparty'
-require 'paynearme/api'
+require 'paynearme/api/request'
 
 request = Paynearme::Api::Request::Builder.new do |r|
     r.host 'http://paynearmehost.tld/api'
