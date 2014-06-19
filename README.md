@@ -24,16 +24,36 @@ To run the example client:
 The jar can also be included in java applications to assist in creating PayNearMe API requests using the `PnmApiClient`
 class.
 
-Ruby
-====
+# Ruby
 
-### Usage:
+## Requirements
 
-Build and install the gem:
+- Ruby
+- Rubygems
 
-    $ rake install
+Recommended:
+- Some sort of ruby versioning control (RVM or rbenv)
+- Bundler
 
-Now your scripts may `require 'paynearme/api'` and use the provided request helpers.
+## Installation
+
+Without bundler, run this command (may require sudo):
+
+    $ gem install pnm_api
+
+With bundler:
+
+Add this line to your application's Gemfile:
+
+    gem 'pnm_api'
+
+And then execute:
+
+    $ bundle
+
+## Usage:
+
+With the gem installed your scripts may `require 'paynearme/api'` and use the provided request helpers.
 
 ### Example:
 
@@ -54,9 +74,6 @@ end
 
 request = builder.build
 response = HTTParty.get request.to_s
-# ...
-
-```
 
 JavaScript
 ==========

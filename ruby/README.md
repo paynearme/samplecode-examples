@@ -1,8 +1,21 @@
-# PnmApi
+# Ruby
 
-TODO: Write a gem description
+## Requirements
+
+- Ruby
+- Rubygems
+
+Recommended:
+- Some sort of ruby versioning control (RVM or rbenv)
+- Bundler
 
 ## Installation
+
+Without bundler, run this command (may require sudo):
+
+    $ gem install pnm_api
+
+With bundler:
 
 Add this line to your application's Gemfile:
 
@@ -12,18 +25,26 @@ And then execute:
 
     $ bundle
 
-Or install it yourself as:
+## Usage:
 
-    $ gem install pnm_api
+With the gem installed your scripts may `require 'paynearme/api'` and use the provided request helpers.
 
-## Usage
+### Example:
 
-TODO: Write usage instructions here
+```ruby
+require 'paynearme/api'
 
-## Contributing
+builder = Paynearme::Api::Request::Builder.new do |r|
+    r.host 'http://paynearmehost.tld/api'
+    r.method :create_order
+    r.secret 'top_secret_code!!!'
+    r.version '2.0'
 
-1. Fork it ( http://github.com/<my-github-username>/pnm_api/fork )
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+    r.param :site_identifier, 'my_site_id'
+    r.param :site_order_identifier, 'ORDER-1929'
+
+    # ...
+end
+
+request = builder.build
+response = HTTParty.get request.to_s
