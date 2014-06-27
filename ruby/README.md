@@ -32,19 +32,17 @@ With the gem installed your scripts may `require 'paynearme/api'` and use the pr
 ### Example:
 
 ```ruby
+# The supporting classes and methods are part of the pnm-examples git repository
+# https://github.com/paynearme/samplecode-examples
+
 require 'httparty'
 require 'paynearme/api/request'
 
-request = Paynearme::Api::Request::Builder.new do |r|
-    r.host 'http://paynearmehost.tld/api'
-    r.method :create_order
-    r.secret 'top_secret_code!!!'
-    r.version '2.0'
-
-    r.param :site_identifier, 'my_site_id'
-    r.param :site_order_identifier, 'ORDER-1929'
-
-    # ...
+request = Paynearme::Api::Request::Builder.new(host: "http://paynearmehost.tld/api", 
+  method: 'find_orders', secret: 'TOP_SECRET_KEY', version: '2.0') do |r|
+  r.param :site_identifier, 'my_site_id'
+  r.param :version, '2.0'
+  r.param :timestamp, Time.now.to_i.to_s
 end
 
 url = request.build.to_s
