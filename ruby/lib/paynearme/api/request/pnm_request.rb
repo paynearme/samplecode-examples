@@ -37,7 +37,7 @@ module Paynearme::Api::Request
 
     def to_s
       sign!
-      "#{host}/#{method}?#{query}"
+      URI.escape("#{host}/#{method}?#{query}")
     end
   end
 end
