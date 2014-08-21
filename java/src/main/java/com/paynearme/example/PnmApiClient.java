@@ -9,8 +9,9 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.HttpClients;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.*;
-
+import java.net.URLEncoder;
 /* Example paynearme http request */
 public class PnmApiClient {
     private HttpClient client;
@@ -44,15 +45,24 @@ public class PnmApiClient {
         params.put(param, value);
     }
 
+    @SuppressWarnings("deprecation")
     public String getUrlString() {
-        return String.format("%s/%s?%s", host, method, queryString());
+        try
+        {
+
+            return String.format("%s/%s?%s", host, method,queryString());
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
     }
 
-    private String queryString() {
+    private String queryString() throws UnsupportedEncodingException{
         final Map<String, String> signed = signedParameters();
         List<String> pairs = new ArrayList<String>(signed.keySet().size());
         for (String key : signed.keySet()) {
-            pairs.add(key + "=" + signed.get(key));
+            pairs.add(key + "=" + URLEncoder.encode(signed.get(key),"UTF-8"));
         }
         return StringUtils.join(pairs, "&");
     }
