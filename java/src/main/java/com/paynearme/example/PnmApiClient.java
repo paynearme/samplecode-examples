@@ -48,7 +48,7 @@ public class PnmApiClient {
         try
         {
 
-            return String.format("%s/%s?%s", host, queryString());
+            return String.format("%s?%s", host, queryString());
         }catch (Exception e)
         {
             e.printStackTrace();
