@@ -9,21 +9,20 @@ import java.util.List;
 
 public class Runner {
     public static void main(String[] args) {
-        String host, method, secret;
+        String host, secret;
         List<String> params;
         if (args.length >= 3) {
             host = args[0];
-            method = args[1];
             secret = args[2];
 
             params = Arrays.asList(Arrays.copyOfRange(args, 3, args.length));
         } else {
-            System.err.println("usage: java " + Runner.class.getSimpleName() + " <host> <method> <secret> [param=value]");
+            System.err.println("usage: java " + Runner.class.getSimpleName() + " <host> <secret> [param=value]");
             System.exit(1);
             return; // suppresses IDE errors...
         }
 
-        PnmApiClient api = new PnmApiClient(host, method, secret);
+        PnmApiClient api = new PnmApiClient(host, secret);
         api.setParam("version", "2.0");
         api.setParam("timestamp", Long.toString(System.currentTimeMillis() / 1000L));
 

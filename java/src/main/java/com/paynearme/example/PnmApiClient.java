@@ -16,15 +16,13 @@ import java.net.URLEncoder;
 public class PnmApiClient {
     private HttpClient client;
     private String host;
-    private String method;
     private String secret;
 
     private Map<String, String> params;
 
-    public PnmApiClient(String host, String method, String secret) {
+    public PnmApiClient(String host, String secret) {
         client = HttpClients.createDefault();
         this.host = host;
-        this.method = method;
         this.secret = secret;
         params = new HashMap<String, String>();
     }
@@ -50,7 +48,7 @@ public class PnmApiClient {
         try
         {
 
-            return String.format("%s/%s?%s", host, method,queryString());
+            return String.format("%s/%s?%s", host, queryString());
         }catch (Exception e)
         {
             e.printStackTrace();
