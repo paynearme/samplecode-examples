@@ -13,17 +13,11 @@ Recommended:
 
 Without bundler, run this command (may require sudo):
 
-    $ gem install pnm_api
+    $ git clone git@github.com:paynearme/samplecode-examples.git
+    $ cd samplecode-examples/ruby/
+    $ gem build pnm_api.gemspec
 
-With bundler:
-
-Add this line to your application's Gemfile:
-
-    gem 'pnm_api'
-
-And then execute:
-
-    $ bundle
+This builds a gem named pnm_api-0.3.0.gem which you can now bundle install
 
 ## Usage:
 
