@@ -2,15 +2,14 @@ require 'paynearme/api'
 
 module Paynearme::Api::Request
   class Builder
-    def initialize(options={}, &block)
+    def initialize(options={})
       opts = default_options.merge(options)
       @secret = opts[:secret]
       @method = opts[:method]
       @host = opts[:host]
       @version = opts[:version]
 
-      block.call(self) unless block.nil?
-      self
+      yield self if block_given?
     end
 
     def param(key, value)

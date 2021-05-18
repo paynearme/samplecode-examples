@@ -8,10 +8,10 @@ module Paynearme::Api
     class_option :host, aliases: [:h], default: 'http://paynearmeservers.tld/api', desc: 'API Host'
     class_option :secret, aliases: [:s], default: 'suprsecret', desc: 'Secret key'
     class_option :version, aliases: [:v], default: '2.0', desc: 'Version'
-    class_option :verbose, default: false, desc: 'Verbose output'
+    class_option :verbose, default: false, desc: 'Verbose output', type: :boolean
 
     desc 'request <method> [args]', 'Perform a request'
-    option :execute, aliases: [:e], default: false, desc: 'Execute request'
+    option :execute, aliases: [:e], default: false, desc: 'Execute request', type: :boolean
     def request(method, *args)
       builder = Paynearme::Api::Request::Builder.new do |r|
         r.host options[:host]
@@ -28,12 +28,13 @@ module Paynearme::Api
       request = builder.build
       
       if options[:execute]
-        puts "URL: #{request.to_s}"
+        url = "#{request.url}?#{request.query}"
+        puts "URL: #{url}"
         verbose_output request if options[:verbose]
 
         response = nil
         t = timer do
-          response = HTTParty.get request.to_s
+          response = options[:version] == '3.0' ? HTTParty.post(request.url, body: request.query) : HTTParty.get(url)
         end
 
         puts response.body
