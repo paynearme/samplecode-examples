@@ -63,7 +63,8 @@ public class PnmExample {
 }
 ```
 
-# Ruby
+Ruby
+====
 
 ## Requirements
 
@@ -88,27 +89,20 @@ This builds a gem named pnm_api-0.3.0.gem which you can now bundle install
 
 With the gem installed your scripts may `require 'paynearme/api'` and use the provided request helpers.
 
-### Example:
+### Examples:
+
+#### Client
 
 ```ruby
-# The supporting classes and methods are part of the pnm-examples git repository
-# https://github.com/paynearme/samplecode-examples
+require 'paynearme'
 
-require 'httparty'
-require 'paynearme/api/request'
-
-request = Paynearme::Api::Request::Builder.new(host: "http://paynearmehost.tld/api", 
-  method: 'find_orders', secret: 'TOP_SECRET_KEY', version: '2.0') do |r|
-  r.param :site_identifier, 'my_site_id'
-  r.param :version, '2.0'
-  r.param :timestamp, Time.now.to_i.to_s
-end
-
-url = request.build.to_s
-
-puts "Request url: #{url}"
-puts HTTParty.get url
+client = Paynearme::Api::Client.new(host: 'http://host/api', secret: 'mysecret', site_identifier: 'K3436433862', version: '2.0')
+response = client.make_call(:find_orders, { site_customer_email: 'yarnosh@gmail.com' })
 ```
+
+#### Standalone CLI:
+
+The Gem installs the pnmapi command. Just run: `$ pnmapi help request`
 
 JavaScript
 ==========

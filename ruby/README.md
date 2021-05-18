@@ -17,7 +17,7 @@ Without bundler, run this command (may require sudo):
     $ cd samplecode-examples/ruby/
     $ gem build pnm_api.gemspec
 
-This builds a gem named pnm_api-0.3.0.gem which you can now bundle install
+This builds a gem named pnm_api-0.4.0.gem which you can now bundle install
 
 ## Usage:
 
@@ -28,22 +28,12 @@ With the gem installed your scripts may `require 'paynearme/api'` and use the pr
 #### Client
 
 ```ruby
-require 'paynearme/api'
+require 'paynearme'
 
-client = Paynearme::Api::Client.new(host: 'http://host/api', secret: key2.last, site_identifier: key2.first, version: '2.0')
+client = Paynearme::Api::Client.new(host: 'http://host/api', secret: 'mysecret', site_identifier: 'K3436433862', version: '2.0')
 response = client.make_call(:find_orders, { site_customer_email: 'yarnosh@gmail.com' })
 ```
 
 #### Standalone CLI:
 
-Create new file with:
-
-```ruby
-#!/usr/bin/env ruby
-
-require 'paynearme/api'
-
-Paynearme::Api::CLI.start(ARGV)
-```
-
-Then `chmod a+x cli.rb`
+The Gem installs the pnmapi command. Just run: `$ pnmapi help request`
