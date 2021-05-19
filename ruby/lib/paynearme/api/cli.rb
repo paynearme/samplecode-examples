@@ -43,7 +43,7 @@ module Paynearme::Api
         puts "Request completed in #{t.to_f*1000}ms"
         puts "WARNING: Long request (> 6 seconds)" if t.to_i >= 6
       else
-        puts request
+        puts [request.url, request.query].join('?')
       end
     end
 

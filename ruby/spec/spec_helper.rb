@@ -1,5 +1,6 @@
-require 'factory_girl'
+require 'factory_bot'
 require 'simplecov'
+require 'paynearme'
 SimpleCov.start
 
 RSpec.configure do |config|

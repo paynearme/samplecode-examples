@@ -54,7 +54,8 @@ module Paynearme::Api::Request
 
     def default_options
       {
-        version: '2.0',
+        method: :find_orders,
+        version: '3.0',
         timestamp: Time.now.to_i,
         secret: '',
         host: 'http://pnm-dev.grio.com:8080/rails40'
