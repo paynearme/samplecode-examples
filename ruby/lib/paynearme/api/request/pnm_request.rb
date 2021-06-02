@@ -11,8 +11,8 @@ module Paynearme::Api::Request
       @params  = options[:params] || {}
       @secret  = options[:secret] || ''
       @version = options[:version] || '3.0'
-      @host = options[:host] || ''
-      @method = options[:method] || ''
+      @host = options[:host]
+      @method = options[:method]
     end
 
     def query

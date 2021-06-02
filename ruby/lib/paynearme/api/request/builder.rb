@@ -6,8 +6,10 @@ module Paynearme::Api::Request
       opts = default_options.merge(options)
       @secret = opts[:secret]
       @method = opts[:method]
-      @host = opts[:host]
       @version = opts[:version]
+      @format = opts[:format]
+      @live = !!opts[:live]
+      @host = opts[:host] || get_host
 
       yield self if block_given?
     end
@@ -58,8 +60,13 @@ module Paynearme::Api::Request
         version: '3.0',
         timestamp: Time.now.to_i,
         secret: '',
-        host: 'http://pnm-dev.grio.com:8080/rails40'
+        format: :json
       }
+    end
+
+    def get_host
+      path = @format == :xml ? 'api' : 'json-api'
+      @live ? "https://www.paynearme.com/#{path}" : "https://sandbox.paynearme.com/#{path}"
     end
   end
 end

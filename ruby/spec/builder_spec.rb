@@ -14,7 +14,7 @@ describe Paynearme::Api::Request::Builder do
 
     it 'should return a PnmRequest with the default options (and an method set up by params instead of method)' do
       request = empty_builder.build
-      expect(request.url).to include('find_orders', 'http://pnm-dev.grio.com:8080/rails40')
+      expect(request.url).to include('find_orders', 'https://sandbox.paynearme.com/json-api')
       expect(request.query).to include('version=3.0')
     end
   end
