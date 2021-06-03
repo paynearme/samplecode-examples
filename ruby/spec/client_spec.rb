@@ -27,5 +27,11 @@ describe Paynearme::Api::Client do
       expect(HTTParty).to receive(:get).with(/\/json\-api/)
       client.make_call(:find_orders, site_customer_email: 'yarnosh@gmail.com')
     end
+
+    it 'should send POST for v3.0' do
+      client = subject.new(secret: '==SECRET==', api_key_id: 'K1234', version: '3.0', site_identifier: 'S56789', live: true)
+      expect(HTTParty).to receive(:post).with(/\/json\-api/, { body: /S56789/ })
+      client.make_call(:find_orders, site_customer_email: 'yarnosh@gmail.com')
+    end
   end
 end
