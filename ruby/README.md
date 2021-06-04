@@ -30,9 +30,11 @@ With the gem installed your scripts may `require 'paynearme/api'` and use the pr
 ```ruby
 require 'paynearme'
 
-client = Paynearme::Api::Client.new(host: 'http://host/api', secret: 'mysecret', site_identifier: 'K3436433862', version: '2.0')
+client = Paynearme::Api::Client.new(secret: 'mysecret', site_identifier: 'S123451234', api_key_id: 'K3436433862', version: '2.0', live: true, format: :json)
 response = client.make_call(:find_orders, { site_customer_email: 'yarnosh@gmail.com' })
 ```
+
+Client defaults to JSON for format but :xml is a valid option. You may also specify a host: which will override the "live" option and should include the format. For example: https://dev.paynearme.com/json-api or https://dev.paynearme.com/api
 
 #### Standalone CLI:
 
