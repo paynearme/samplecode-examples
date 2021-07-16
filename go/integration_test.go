@@ -16,10 +16,11 @@ const (
 	apiKey3             = "K9800794489"
 	secret3             = "04b9800558f1cf7dd4d8386d8"
 	orderID             = "87418614411"
+	site                = "CARDAMOM"
 )
 
 func TestFindOrders(t *testing.T) {
-	c := NewClient(apiKey, secret, "2.0")
+	c := NewClient(site, apiKey, secret, "2.0")
 	options := map[string]string{"site_customer_email": site_customer_email}
 
 	res, err := c.FindOrders(options)
@@ -36,7 +37,7 @@ func TestFindOrders(t *testing.T) {
 }
 
 func TestFindOrdersError(t *testing.T) {
-	c := NewClient(apiKey, secret, "2.0")
+	c := NewClient(site, apiKey, secret, "2.0")
 	options := map[string]string{}
 
 	res, err := c.FindOrders(options)
@@ -49,7 +50,7 @@ func TestFindOrdersError(t *testing.T) {
 }
 
 func TestFindOrders3(t *testing.T) {
-	c := NewClient(apiKey3, secret3, "3.0")
+	c := NewClient(site, apiKey3, secret3, "3.0")
 	options := map[string]string{"site_customer_email": site_customer_email}
 
 	res, err := c.FindOrders(options)

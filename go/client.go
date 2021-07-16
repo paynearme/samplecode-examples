@@ -21,13 +21,15 @@ type Client struct {
 	ApiKey     string
 	secret     string
 	baseURL    string
+	SiteID     string
 	HTTPClient *http.Client
 }
 
-func NewClient(apiKey string, secret string, version string) *Client {
+func NewClient(siteID string, apiKey string, secret string, version string) *Client {
 	return &Client{
 		Version: version,
 		ApiKey:  apiKey,
+		SiteID:  siteID,
 		secret:  secret,
 		HTTPClient: &http.Client{
 			Timeout: 5 * time.Minute,
