@@ -38,6 +38,14 @@ func NewClient(siteID string, apiKey string, secret string, version string) *Cli
 	}
 }
 
+type Response interface {
+	UnmarshalBody([]byte) error
+}
+
+func GetResponse(b []byte, v Response) error {
+	return v.UnmarshalBody(b)
+}
+
 type PnmError struct {
 	Description string `json:"description"`
 }
@@ -45,6 +53,16 @@ type PnmError struct {
 type errorResponse struct {
 	Status    string     `json:"status"`
 	PnmErrors []PnmError `json:"errors"`
+}
+
+func (res *errorResponse) UnmarshalBody(b []byte) error {
+	json.Unmarshal(b, &res)
+
+	if res.PnmErrors != nil {
+		return errors.New("errors in request")
+	} else {
+		return nil
+	}
 }
 
 func (c *Client) signParams(params url.Values) {
@@ -96,46 +114,35 @@ func (c *Client) buildRequest(method string, params url.Values) (http.Request, e
 		body.WriteString(params.Encode())
 	}
 
-	req, err := http.NewRequest(verb, url, body)
-
-	if err != nil {
+	if req, err := http.NewRequest(verb, url, body); err != nil {
 		return *req, err
+	} else {
+		return *req, nil
 	}
-
-	// req.Header.Set("Content-Type", "application/json; charset=utf-8")
-
-	return *req, nil
 }
 
 // Content-type and body should be already added to req
-func (c *Client) sendRequest(req *http.Request, v interface{}) error {
+func (c *Client) sendRequest(req *http.Request, v Response) error {
 	req.Header.Set("Accept", "application/json; charset=utf-8")
 
-	res, err := c.HTTPClient.Do(req)
-	if err != nil {
-		return err
-	}
-
-	if res.StatusCode != http.StatusOK {
-		return fmt.Errorf("unknown error, status code: %d", res.StatusCode)
-	}
-
-	// Because we're going to try to process it twice, once for errors and finally for the expected results
-	bodyBytes, _ := ioutil.ReadAll(res.Body)
-	defer res.Body.Close()
-
-	var errRes errorResponse
-	if err = json.NewDecoder(ioutil.NopCloser(bytes.NewBuffer(bodyBytes))).Decode(&errRes); err == nil {
-		if errRes.PnmErrors != nil {
-			// TODO: Return all errors?
-			return errors.New(errRes.PnmErrors[0].Description)
+	if res, err := c.HTTPClient.Do(req); err == nil {
+		if res.StatusCode != http.StatusOK {
+			return fmt.Errorf("unknown error, status code: %d", res.StatusCode)
 		}
-	}
 
-	// Unmarshall and populate v
-	if err = json.NewDecoder(ioutil.NopCloser(bytes.NewBuffer(bodyBytes))).Decode(v); err != nil {
+		bodyBytes, _ := ioutil.ReadAll(res.Body)
+		defer res.Body.Close()
+
+		var errRes errorResponse
+		if err = GetResponse(bodyBytes, &errRes); err != nil {
+			for _, e := range errRes.PnmErrors {
+				err = fmt.Errorf("%w; %s", err, e.Description)
+			}
+			return err
+		} else {
+			return GetResponse(bodyBytes, v)
+		}
+	} else {
 		return err
 	}
-
-	return nil
 }
